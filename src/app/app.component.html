@@ -1,0 +1,48 @@
+
+  <form  [formGroup]="myForm" #hourSubmissionFormId="ngForm">
+  <table>
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+            <th>Sunday</th>
+            <th class="text-uppercase pb-2"><span class="ml-4">total</span>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container>
+            <tr>
+                <td>billable</td>
+                <ng-container formArrayName="submittedHours">
+                    <td *ngFor="let inputHours of myForm.get('submittedHours').controls;let i=index"
+                    [formGroupName]="i">
+                        <div>
+                            <input type="text" maxlength="2" [formControl]="inputHours.get('hours')"
+                                 (ngModelChange)="addHours('billable',inputHours.get('hours').value,i,inputHours.get('hours'), hourSubmissionFormId.value)">
+                        </div>
+{{inputHours.get('hours').value | json}}
+                    </td>
+
+                </ng-container> 
+                <!-- Total Billable Hours -->
+                <td class="">
+                    <div>
+                        <input type="text" disabled
+                             name="add-hours"
+                         
+                            id="hoursb" placeholder="s0 hrs" [value]="0">
+                    </div>
+                </td>
+            </tr>
+        </ng-container>
+
+
+    </tbody>
+</table>
+</form>
