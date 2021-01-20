@@ -1,48 +1,78 @@
-
-  <form  [formGroup]="myForm" #hourSubmissionFormId="ngForm">
-  <table>
-    <thead>
-        <tr>
-            <th>Category</th>
-            <th>Monday</th>
-            <th>Tuesday</th>
-            <th>Wednesday</th>
-            <th>Thursday</th>
-            <th>Friday</th>
-            <th>Saturday</th>
-            <th>Sunday</th>
-            <th class="text-uppercase pb-2"><span class="ml-4">total</span>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <ng-container>
-            <tr>
-                <td>billable</td>
-                <ng-container formArrayName="submittedHours">
-                    <td *ngFor="let inputHours of myForm.get('submittedHours').controls;let i=index"
-                    [formGroupName]="i">
-                        <div>
-                            <input type="text" maxlength="2" [formControl]="inputHours.get('hours')"
-                                 (ngModelChange)="addHours('billable',inputHours.get('hours').value,i,inputHours.get('hours'), hourSubmissionFormId.value)">
+<form [formGroup]="myForm" #hourSubmissionFormId="ngForm">
+	<table>
+		<thead>
+			<tr>
+				<th>Category</th>
+				<th>Monday</th>
+				<th>Tuesday</th>
+				<th>Wednesday</th>
+				<th>Thursday</th>
+				<th>Friday</th>
+				<th>Saturday</th>
+				<th>Sunday</th>
+				<th class="text-uppercase pb-2"><span class="ml-4">total</span>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<ng-container formArrayName="submittedHours">
+				<tr formGroupName="0">
+					<td>billable</td>
+					<ng-container formArrayName="hours">
+						<td *ngFor="let inputHours of myForm.get('submittedHours').controls[0].get('hours').controls;let id=index"
+							[formGroupName]="id">
+							<div>
+								<input type="text" maxlength="2" [formControl]="inputHours.get('submittedHours')" (ngModelChange)="addHours('billable',inputHours.get('submittedHours').value,id,myForm)"
+                               >
                         </div>
-{{inputHours.get('hours').value | json}}
-                    </td>
 
-                </ng-container> 
-                <!-- Total Billable Hours -->
-                <td class="">
-                    <div>
-                        <input type="text" disabled
+						</td>
+
+					</ng-container>
+					<!-- Total Billable Hours -->
+					<td class="">
+						<div>
+							<input type="text" disabled
                              name="add-hours"
-                         
-                            id="hoursb" placeholder="0 hrs" [value]="this.total || 0">
+
+                             placeholder="0 hrs" [value]="total1 || 0">
                     </div>
-                </td>
-            </tr>
-        </ng-container>
+					</td>
+				</tr>
+				<tr formGroupName="1">
+					<td>non-billable</td>
+
+            <ng-container formArrayName="hours">
+						<td *ngFor="let inputHoursB of myForm.get('submittedHours').controls[1].get('hours').controls;let id=index"
+							[formGroupName]="id">
+							<div>
+								<input type="text" maxlength="2" [formControl]="inputHoursB.get('submittedHours')" (ngModelChange)="addHours('nonbillable',inputHoursB.get('submittedHours').value,id,myForm)"
+                                >
+                        </div>
+
+						</td>
+
+					</ng-container>
+
+					<td class="">
+						<div>
+							<input type="text" disabled
+                             name="add-hours"
+
+                             placeholder="0 hrs" [value]="total2 || 0">
+                    </div>
+					</td>
+				</tr>
+        <tr>
+          					<input colspan="8" type="text" disabled
+                             name="total-hours"
+
+                             placeholder="0 hrs" [value]="total || 0">
+          </tr>
+			</ng-container>
 
 
-    </tbody>
-</table>
+		</tbody>
+	</table>
+  <button (click)="onSubmit(hourSubmissionFormId)">submit</button>
 </form>
